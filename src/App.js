@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 import About from './components/About'
 import CompletedTasks from './components/CompletedTasks'
+
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false)
@@ -19,6 +21,7 @@ function App() {
   useEffect(() => {
     getTasks()
   }, [getTasks])
+
 
 
 
@@ -65,6 +68,7 @@ function App() {
     })
     setTasks(tasks.filter((task) => task.id !== id))
   }
+
 
   // Toggle Reminder
   const toggleReminder = async (id) => {
@@ -114,21 +118,33 @@ function App() {
     <div className="container">
       <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
       <Routes>
-        <Route 
-          path='/' 
-          element={
-            <>
-            {showAddTask && <AddTask onAdd={addTask} />}
-            {tasks.length > 0 ? (
-            <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} onComplete={taskCompleted}/>
-            ) : (
-              'No Tasks to Show'
-            )}
-          </>
-          }
-        />
-        <Route path='/about' element={<About />} />
-        <Route path='/completedtasks' element={<CompletedTasks />} />
+          <Route
+            exact path='/'
+            element={
+              <>
+              {showAddTask && <AddTask onAdd={addTask} />}
+              {tasks.length > 0 ? (
+              <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} onComplete={taskCompleted}/>
+              ) : (
+                'No Tasks to Show'
+              )}
+            </>
+            }
+          />
+          <Route exact path='/about' element={<About />} />
+          <Route 
+            exact 
+            path='/completedtasks' 
+            element={
+              <>
+              {tasks.length > 0 ? (
+              <CompletedTasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} onComplete={taskCompleted}/>
+              ) : (
+                <Link to="/">Go Back</Link>
+              )}
+              </>
+          } 
+          />
       </Routes>
       <Footer />
     </div>

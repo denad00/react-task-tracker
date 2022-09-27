@@ -1,11 +1,21 @@
+import CompletedTask from './CompletedTask'
 import { Link } from 'react-router-dom'
 
-export const CompletedTasks = () => {
-  return (
-    <div>
-        <h4>Version 1.0.0</h4>
+const CompletedTasks = ({ tasks, onDelete, onToggle, onComplete }) => {
+    return (
+    <>
+        {tasks.map((task, index) => (
+            <CompletedTask 
+                key={index} 
+                task={task} 
+                onDelete={onDelete} 
+                onToggle={onToggle} 
+                onComplete={onComplete}
+            />
+        ))}
+
         <Link to="/">Go Back</Link>
-    </div>
+    </>
   )
 }
 
